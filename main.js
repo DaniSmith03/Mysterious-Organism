@@ -44,11 +44,40 @@ const pAequorFactory = (idNum, dna) => {
       );
       return null;
     },
+    willLikelySurvive() {
+      let cg = this.dna.filter((strand) => strand == 'C' || strand == 'G');
+      return cg.length >= 9;
+    },
   };
 };
 
-const animal = pAequorFactory(4, mockUpStrand());
-const human = pAequorFactory(5, mockUpStrand());
-console.log(animal);
-console.log(human);
-console.log(animal.compareDNA(human));
+// const animal = pAequorFactory(4, mockUpStrand());
+// const human = pAequorFactory(5, mockUpStrand());
+// console.log(animal);
+// console.log(human);
+// console.log(animal.willLikelySurvive());
+// console.log(human.willLikelySurvive());
+
+// create 30 specimen that are likely to survive
+
+const getArr = (num) => {
+  let spec = [];
+  let count = num - 1;
+  for (let i = 0; i < num; i++) {
+    let survival = false;
+    let generate = pAequorFactory(count, mockUpStrand());
+    while (survival == false) {
+      if (generate.willLikelySurvive() == true) {
+        survival = true;
+        count -= 1;
+        spec.push(generate);
+      } else {
+        generate.dna = mockUpStrand();
+      }
+    }
+  }
+  return spec;
+};
+
+lab = getArr(30);
+console.log(lab.length);
